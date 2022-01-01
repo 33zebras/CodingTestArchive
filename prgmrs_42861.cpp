@@ -48,3 +48,34 @@ int solution(int n, vector<vector<int>> costs) {
     
     return answer;
 }
+
+
+
+
+// sol 2
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int solution(int n, vector<vector<int>> costs) {
+    int answer = 0;
+    vector<int> par(n);
+    sort(costs.begin(), costs.end(), [](vector<int> a, vector<int> b){return a[2] < b[2];});
+    for(int i = 0; i < n; i++)
+        par[i] = i;
+    for(int edgCnt = 0, idx = 0; edgCnt < n-1; idx++)
+    {
+        int par1 = costs[idx][0], par2 = costs[idx][1];
+        while(par[par1] != par1)
+            par1 = par[par1];
+        while(par[par2] != par2)
+            par2 = par[par2];
+        if(par1 != par2)
+        {
+            par[par1 < par2 ? par2 : par1] = par1 < par2 ? par1 : par2;
+            answer += costs[idx][2];
+            edgCnt++;
+        }
+    }
+    return answer;
+}
